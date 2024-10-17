@@ -1,14 +1,28 @@
-FROM openjdk:23-jdk-slim
+# Dockerfile para Spring Boot Backend
 
-# Crea un grupo y un usuario
-RUN groupadd spring && useradd -g spring -m spring
-
-USER spring
+# Usa Maven 3.9.9 con JDK 17 de Eclipse Temurin para construir la aplicación
+FROM maven:3.9.9-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-# Especifica el nombre exacto del archivo JAR
-COPY --chown=spring:spring target/demo-0.0.1-SNAPSHOT.jar app.jar
+# Copiar los archivos necesarios para construir el proyecto
+COPY pom.xml .
+COPY src ./src
 
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+# Construir la aplicación
+RUN mvn clean package -DskipTests
+
+# Usar una imagen ligera de JDK 17 de Eclipse Temurin para ejecutar la aplicación
+FROM eclipse-temurin:17-jdk
+
+WORKDIR /app
+
+# Copiar el archivo JAR generado desde la etapa de construcción
+COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar /app/demo.jar
+
+# Exponer el puerto 8080 para la API
+EXPOSE 8080
+
+# Comando para ejecutar la aplicación Spring Boot
+ENTRYPOINT ["java", "-jar", "/app/demo.jar"]
 
