@@ -21,7 +21,7 @@ WORKDIR /app
 COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar /app/demo.jar
 
 # Exponer el puerto 8080 para la API
-EXPOSE 8080
+EXPOSE 8081
 
 # Comando para ejecutar la aplicación Spring Boot
 ENTRYPOINT ["java", "-jar", "/app/demo.jar"]
