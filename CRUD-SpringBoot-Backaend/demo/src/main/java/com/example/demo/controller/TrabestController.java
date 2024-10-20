@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,24 +28,21 @@ public class TrabestController {
   }
 
   @PostMapping
-  public ResponseEntity<TrabestModel> createTrabest(@RequestBody TrabestModel trabest) {
-    TrabestModel createdTrabest = trabestService.guardarTrabest(trabest);
-    return new ResponseEntity<>(createdTrabest, HttpStatus.CREATED);
+  public ResponseEntity<TrabestModel> guardarTrabest(@RequestBody TrabestModel trabest) {
+    TrabestModel nuevoTrabest = trabestService.guardarTrabest(trabest);
+    return ResponseEntity.ok(nuevoTrabest);
   }
 
-  // Obtener un registro de trabest por ID
   @GetMapping("/{idt}/{idest}")
-  public ResponseEntity<TrabestModel> getTrabestById(@PathVariable Long idt, @PathVariable Long idest) {
+  public ResponseEntity<TrabestModel> obtenerPorId(@PathVariable Long idt, @PathVariable Long idest) {
     Optional<TrabestModel> trabest = trabestService.obtenerPorId(idt, idest);
-    return trabest.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    return trabest.map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  // Eliminar un registro de trabest
   @DeleteMapping("/{idt}/{idest}")
-  public ResponseEntity<Void> deleteTrabest(@PathVariable Long idt, @PathVariable Long idest) {
-    if (trabestService.eliminarTrabest(idt, idest)) {
-      return ResponseEntity.noContent().build();
-    }
-    return ResponseEntity.notFound().build();
+  public ResponseEntity<Void> eliminarTrabest(@PathVariable Long idt, @PathVariable Long idest) {
+    boolean eliminado = trabestService.eliminarTrabest(idt, idest);
+    return eliminado ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
   }
 }

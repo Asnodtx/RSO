@@ -9,12 +9,12 @@ public class TrabestModel {
   private TrabestIdModel id;
 
   @ManyToOne
-  @MapsId("idest") // This maps the idest part of the composite key
+  @MapsId("idest")
   @JoinColumn(name = "idest")
   private EstudianteModel estudiante;
 
   @ManyToOne
-  @MapsId("idt") // This maps the idt part of the composite key
+  @MapsId("idt") 
   @JoinColumn(name = "idt")
   private TrabajadorModel trabajador;
 
@@ -24,8 +24,8 @@ public class TrabestModel {
   @Column(name = "diagnostico", length = 100)
   private String diagnostico;
 
-  public TrabestModel() {
-  }
+  //public TrabestModel() {
+  //}
 
   public TrabestIdModel getId() {
     return id;
