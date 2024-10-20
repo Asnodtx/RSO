@@ -10,6 +10,15 @@ public class TrabestIdModel implements Serializable {
   private Long idt;
   private Long idest;
 
+  public TrabestIdModel() {
+
+  }
+
+  public TrabestIdModel(Long idt, Long idest) {
+    this.idt = idt;
+    this.idest = idest;
+  }
+
   public Long getIdt() {
     return idt;
   }
