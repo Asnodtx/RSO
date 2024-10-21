@@ -21,7 +21,7 @@ const UsuarioForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8080/usuario", usuario);
+      await axios.post("http://localhost:8081/usuario", usuario);
       alert("Usuario creado exitosamente");
       setUsuario({
         name: "",
@@ -36,9 +36,30 @@ const UsuarioForm = () => {
     }
   };
 
+	async function serverData() {
+    try {
+      let r = await fetch("http://localhost:8081/ejemplos");
+      let j = await r.json();
+      return j;
+    } catch (error) {
+      console.log("ERROR ---", error);
+    }
+  }
+
+
   return (
     <form onSubmit={handleSubmit} className="usuario-form">
       <h2>Crear Usuario</h2>
+	  <button
+		type='button'
+		onClick={async () => {
+			const datos = await serverData()
+			console.log(datos)
+		}}
+	  >
+	  	{"pedir datos"}
+	  </button>
+
       <label>
         Nombre:
         <input
