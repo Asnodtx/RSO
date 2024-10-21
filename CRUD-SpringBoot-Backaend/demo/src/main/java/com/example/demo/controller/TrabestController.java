@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +28,21 @@ public class TrabestController {
     return trabestService.obtenerTrabest();
   }
 
+  @GetMapping("/compuesta/{idt}/{idest}")
+  public ResponseEntity<TrabestModel> LlaveCompuesta(@PathVariable Long idt, @PathVariable Long idest) {
+    Optional<TrabestModel> trabest = trabestService.obtenerPorId(idt, idest);
+    return trabest.map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.notFound().build());
+  }
+
   @PostMapping
-  public ResponseEntity<TrabestModel> guardarTrabest(@RequestBody TrabestModel trabest) {
-    TrabestModel nuevoTrabest = trabestService.guardarTrabest(trabest);
-    return ResponseEntity.ok(nuevoTrabest);
+  public ResponseEntity<?> guardarTrabest(@RequestBody TrabestModel trabest) {
+    try {
+      TrabestModel nuevoTrabest = trabestService.guardarTrabest(trabest);
+      return ResponseEntity.status(HttpStatus.CREATED).body(nuevoTrabest);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al guardar el registro:");
+    }
   }
 
   @GetMapping("/{idt}/{idest}")

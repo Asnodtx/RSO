@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.model.EstudianteModel;
+import com.example.demo.model.TrabajadorModel;
 import com.example.demo.model.TrabestIdModel;
 import com.example.demo.model.TrabestModel;
 import com.example.demo.repositories.TrabestRepository;
@@ -18,6 +20,14 @@ public class TrabestService {
 
   public ArrayList<TrabestModel> obtenerTrabest() {
     return (ArrayList<TrabestModel>) trabestRepository.findAll();
+  }
+
+  public TrabestModel LlaveCompuesta(EstudianteModel estudiante, TrabajadorModel trabajador) {
+    TrabestIdModel id = new TrabestIdModel();
+    id.setIdest(estudiante.getId());
+    id.setIdt(trabajador.getId());
+
+    return trabestRepository.findById(id).orElse(null);
   }
 
   public TrabestModel guardarTrabest(TrabestModel trabest) {
