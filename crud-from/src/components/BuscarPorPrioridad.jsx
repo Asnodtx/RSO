@@ -9,7 +9,7 @@ const BuscarPorPrioridad = () => {
   const buscarPorPrioridad = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/usuario/query?prioridad=${prioridad}`,
+        `http://localhost:8081/usuario/query?prioridad=${prioridad}`,
       );
       setUsuarios(response.data);
       setError("");
