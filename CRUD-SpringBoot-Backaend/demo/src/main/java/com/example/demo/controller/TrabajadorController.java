@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,27 +24,30 @@ public class TrabajadorController {
   TrabajadorService trabajadorService;
 
   @GetMapping
-  public ArrayList<TrabajadorModel> obtenerTrabajadores(){
+  public List<TrabajadorModel> obtenerTrabajadores() {
     return trabajadorService.obtenerTrabajadores();
   }
 
   @PostMapping
-  public TrabajadorModel guardarTrabajador(@RequestBody TrabajadorModel trabajador){
-    return this.trabajadorService.guardarTrabajador(trabajador);
+  public ResponseEntity<TrabajadorModel> guardarTrabajador(@RequestBody TrabajadorModel trabajador) {
+    TrabajadorModel nuevoTrabajador = trabajadorService.guardarTrabajador(trabajador);
+    return ResponseEntity.status(HttpStatus.CREATED).body(nuevoTrabajador);
   }
 
-  @GetMapping ( path = "/{id}")
-  public Optional<TrabajadorModel> obtenerTrabajadorId(@PathVariable("id") Long id){
-    return this.trabajadorService.obtenerPorId(id);
+  @GetMapping("/{id}")
+  public ResponseEntity<TrabajadorModel> obtenerTrabajadorPorId(@PathVariable Long id) {
+    Optional<TrabajadorModel> trabajador = trabajadorService.obtenerPorId(id);
+    return trabajador.map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping( path = "/{id}")
-  public String eliminarPorId(@PathVariable("id")Long id){
-    boolean ok = this.trabajadorService.eliminarTrabajador(id);
-    if(ok){
-      return "Se elimino el trabajador con id: " + id;
-    }else{
-      return "No se pudo eliminar el trabajador con id: " + id;
+  @DeleteMapping("/{id}")
+  public ResponseEntity<String> eliminarTrabajadorPorId(@PathVariable Long id) {
+    boolean ok = trabajadorService.eliminarTrabajador(id);
+    if (ok) {
+      return ResponseEntity.ok("Se eliminó el trabajador con id: " + id);
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo eliminar el trabajador con id: " + id);
     }
   }
 }

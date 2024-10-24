@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,27 +24,30 @@ public class EstudianteController {
   EstudianteService estudianteService;
 
   @GetMapping
-  public ArrayList<EstudianteModel> obtenerEsudiantees(){
+  public List<EstudianteModel> obtenerEstudiantes() {
     return estudianteService.obtenerEstudiante();
   }
 
   @PostMapping
-  public EstudianteModel guardarEstudiante(@RequestBody EstudianteModel estudiante){
-    return this.estudianteService.guardarEstudiante(estudiante);
+  public ResponseEntity<EstudianteModel> guardarEstudiante(@RequestBody EstudianteModel estudiante) {
+    EstudianteModel nuevoEstudiante = estudianteService.guardarEstudiante(estudiante);
+    return ResponseEntity.status(HttpStatus.CREATED).body(nuevoEstudiante);
   }
 
-  @GetMapping ( path = "/{id}")
-  public Optional<EstudianteModel> obtenerEstudianteId(@PathVariable("id") Long id){
-    return this.estudianteService.obtenerPorId(id);
+  @GetMapping("/{id}")
+  public ResponseEntity<EstudianteModel> obtenerEstudiantePorId(@PathVariable Long id) {
+    Optional<EstudianteModel> estudiante = estudianteService.obtenerPorId(id);
+    return estudiante.map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping( path = "/{id}")
-  public String eliminarPorId(@PathVariable("id")Long id){
-    boolean ok = this.estudianteService.eliminarEstudiante(id);
-    if(ok){
-      return "Se elimino el estudiante con id: " + id;
-    }else{
-      return "No se pudo eliminar el estudiante con id: " + id;
+  @DeleteMapping("/{id}")
+  public ResponseEntity<String> eliminarEstudiantePorId(@PathVariable Long id) {
+    boolean ok = estudianteService.eliminarEstudiante(id);
+    if (ok) {
+      return ResponseEntity.ok("Se eliminó el estudiante con id: " + id);
+    } else {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo eliminar el estudiante con id: " + id);
     }
   }
 }

@@ -1,5 +1,4 @@
 package com.example.demo.model;
-
 import java.util.Date;
 
 import jakarta.persistence.*;
@@ -7,88 +6,56 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "formulario")
 public class FormularioModel {
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "formulario_seq")
-  @SequenceGenerator(name = "formulario_seq", sequenceName = "formulario_seq", allocationSize = 1)
-  @Column(name = "idf")
-  private Long id;
 
-  @Column(name = "folio", length = 10)
-  private String folio;
+    @Id
+    @Column(name = "folio")
+    private Long folio; // Clave primaria
 
-  @Column(name = "fecha")
-  @Temporal(TemporalType.DATE)
-  private Date fecha;
+    @Column(name = "fecha")
+    @Temporal(TemporalType.DATE)
+    private Date fecha; // Fecha del formulario
 
-  @Column(name = "respuesta")
-  private String respuesta;
+    @ManyToOne
+    @JoinColumn(name = "idt", referencedColumnName = "idt", nullable = false)
+    private TrabajadorModel trabajador; // Relación con Trabajador
 
-  @ManyToOne
-  @JoinColumn(name = "idt")
-  private TrabajadorModel trabajador;
+    @ManyToOne
+    @JoinColumn(name = "idest", referencedColumnName = "idest", nullable = false)
+    private EstudianteModel estudiante; // Relación con Estudiante
 
-  @ManyToOne
-  @JoinColumn(name = "idc")
-  private CategoriaModel categoria;
+    public FormularioModel() {
+    }
 
-  @ManyToOne
-  @JoinColumn(name = "idp")
-  private PreguntaModel pregunta;
+    public Long getFolio() {
+        return folio;
+    }
 
-  public Long getId() {
-    return id;
-  }
+    public void setFolio(Long folio) {
+        this.folio = folio;
+    }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public Date getFecha() {
+        return fecha;
+    }
 
-  public String getFolio() {
-    return folio;
-  }
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
 
-  public void setFolio(String folio) {
-    this.folio = folio;
-  }
+    public TrabajadorModel getTrabajador() {
+        return trabajador;
+    }
 
-  public Date getFecha() {
-    return fecha;
-  }
+    public void setTrabajador(TrabajadorModel trabajador) {
+        this.trabajador = trabajador;
+    }
 
-  public void setFecha(Date fecha) {
-    this.fecha = fecha;
-  }
+    public EstudianteModel getEstudiante() {
+        return estudiante;
+    }
 
-  public String getRespuesta() {
-    return respuesta;
-  }
-
-  public void setRespuesta(String respuesta) {
-    this.respuesta = respuesta;
-  }
-
-  public TrabajadorModel getTrabajador() {
-    return trabajador;
-  }
-
-  public void setTrabajador(TrabajadorModel trabajador) {
-    this.trabajador = trabajador;
-  }
-
-  public CategoriaModel getCategoria() {
-    return categoria;
-  }
-
-  public void setCategoria(CategoriaModel categoria) {
-    this.categoria = categoria;
-  }
-
-  public PreguntaModel getPregunta() {
-    return pregunta;
-  }
-
-  public void setPregunta(PreguntaModel pregunta) {
-    this.pregunta = pregunta;
-  }
-
+    public void setEstudiante(EstudianteModel estudiante) {
+        this.estudiante = estudiante;
+    }
 }
+

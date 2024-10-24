@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,8 @@ public class EstudianteService{
   @Autowired
   EstudianteRepository estudianteRepository;
 
-  public ArrayList<EstudianteModel> obtenerEstudiante(){
-    return (ArrayList<EstudianteModel>) estudianteRepository.findAll();
+  public List<EstudianteModel> obtenerEstudiante(){
+    return (List<EstudianteModel>) estudianteRepository.findAll();
   }
 
   public EstudianteModel guardarEstudiante(EstudianteModel estudiante){

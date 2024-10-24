@@ -8,38 +8,54 @@ services:
     depends_on:
       - backend
     networks:
-      - app-network
+      - my-app-network
+    environment:
+      - VITE_API_URL=http://localhost:8080
 
   backend:
     build:
       context: ./CRUD-SpringBoot-Backaend/demo/
       dockerfile: Dockerfile
     ports:
-      - "8081:8081"
+      - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@oracle-db:1521/XE
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@oracle-db:1521:XE
       - SPRING_DATASOURCE_USERNAME=jesus
       - SPRING_DATASOURCE_PASSWORD=123
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.OracleDialect
+      - SPRING_JPA_DATABASE-PLATFORM=org.hibernate.dialect.OracleDialect
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=update
+      - TZ=America/Mexico_City
+      - JAVA_OPTS=-Duser.timezone=America/Mexico_City
+      - ALLOWED_ORIGINS=http://localhost:5173,http://frontend:80,http://localhost:80,http://127.0.0.1:5173
     depends_on:
-      - oracle-db
+      oracle-db:
+        condition: service_healthy
     networks:
-      - app-network
+      - my-app-network
 
   oracle-db:
     image: gvenzl/oracle-xe:11
+    container_name: oracle-db
     ports:
       - "1521:1521"
     environment:
       - ORACLE_PASSWORD=123
+      - ORACLE_DATABASE=XE
+      - APP_USER=jesus
+      - APP_USER_PASSWORD=123
+      - TZ=America/Mexico_City
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - my-app-network
     volumes:
       - oracle-data:/opt/oracle/oradata
-    networks:
-      - app-network
 
 networks:
-  app-network:
+  my-app-network:
     driver: bridge
 
 volumes:

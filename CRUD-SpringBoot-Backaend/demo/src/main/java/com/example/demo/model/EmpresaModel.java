@@ -1,6 +1,9 @@
 package com.example.demo.model;
 
+import java.util.HashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
@@ -13,11 +16,15 @@ public class EmpresaModel {
   @Column(name = "ide")
   private Long id;
 
-  @Column(name = "nombre")
+  @Column(name = "nombre", nullable = false, length = 20)
   private String nombre;
 
-  @OneToMany(mappedBy = "empresa")
-  private Set<TrabajadorModel> trabajadores;
+  @Column(name = "direccion", nullable = false, length = 30)
+  private String direccion;
+
+  @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  private Set<TrabajadorModel> trabajadores = new HashSet<>();
 
   public Long getId() {
     return id;
@@ -35,6 +42,14 @@ public class EmpresaModel {
     this.nombre = nombre;
   }
 
+  public String getDireccion() {
+    return direccion;
+  }
+
+  public void setDireccion(String direccion) {
+    this.direccion = direccion;
+  }
+
   public Set<TrabajadorModel> getTrabajadores() {
     return trabajadores;
   }
@@ -42,4 +57,5 @@ public class EmpresaModel {
   public void setTrabajadores(Set<TrabajadorModel> trabajadores) {
     this.trabajadores = trabajadores;
   }
+
 }

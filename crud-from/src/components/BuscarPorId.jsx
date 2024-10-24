@@ -8,7 +8,7 @@ const BuscarPorId = () => {
 
   const buscarUsuario = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/usuario/${id}`);
+      const response = await axios.get(`http://localhost:8080/usuario/${id}`);
       setUsuario(response.data);
       setError("");
     } catch (err) {

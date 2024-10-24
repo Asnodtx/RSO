@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.model.TrabajadorModel;
 
 @Repository
-public interface TrabajadorRepository extends CrudRepository<TrabajadorModel, Long>{
-
+public interface TrabajadorRepository extends CrudRepository<TrabajadorModel, Long> {
 }

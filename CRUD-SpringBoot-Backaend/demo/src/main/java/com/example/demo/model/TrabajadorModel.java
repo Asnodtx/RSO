@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import java.util.Set;
+import java.util.Objects;
 
 import jakarta.persistence.*;
 
@@ -13,13 +13,13 @@ public class TrabajadorModel {
   @Column(name = "idt")
   private Long id;
 
-  @Column(name = "nombre", length = 30)
+  @Column(name = "nombre", nullable = false, length = 30)
   private String nombre;
 
-  @Column(name = "apellidoMat", length = 30)
+  @Column(name = "apellidoMat", nullable = false, length = 30)
   private String apellidoMaterno;
 
-  @Column(name = "apellidoPat", length = 30)
+  @Column(name = "apellidoPat", nullable = false, length = 30)
   private String apellidoPaterno;
 
   @Column(name = "edad")
@@ -35,11 +35,23 @@ public class TrabajadorModel {
   private String escolaridad;
 
   @ManyToOne
-  @JoinColumn(name = "ide")
+  @JoinColumn(name = "ide", nullable = false)
   private EmpresaModel empresa;
 
-  @OneToMany(mappedBy = "trabajador")
-  private Set<TrabestModel> trabestSet;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
+    TrabajadorModel that = (TrabajadorModel) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
 
   public Long getId() {
     return id;
@@ -111,13 +123,5 @@ public class TrabajadorModel {
 
   public void setEmpresa(EmpresaModel empresa) {
     this.empresa = empresa;
-  }
-
-  public Set<TrabestModel> getTrabestSet() {
-    return trabestSet;
-  }
-
-  public void setTrabestSet(Set<TrabestModel> trabestSet) {
-    this.trabestSet = trabestSet;
   }
 }
