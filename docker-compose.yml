@@ -52,11 +52,11 @@ services:
     networks:
       - my-app-network
     volumes:
-      - oracle-data:/opt/oracle/oradata
+      - oracle-volume:/u01/app/oracle/oradata
 
 networks:
   my-app-network:
     driver: bridge
 
 volumes:
-  oracle-data:
+  oracle-volume:
