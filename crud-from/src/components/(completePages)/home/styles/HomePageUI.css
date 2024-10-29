@@ -1,0 +1,12 @@
+.Home__grid {
+    width: 100%;
+    height: 90vh;
+    display: grid;
+}
+
+.Home__content {
+    width: 90%;
+    display: grid;
+    justify-self: center;
+    padding-top: 2rem;
+}
