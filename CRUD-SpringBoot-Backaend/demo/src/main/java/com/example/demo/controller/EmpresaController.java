@@ -29,9 +29,13 @@ public class EmpresaController {
   }
 
   @PostMapping
-  public ResponseEntity<EmpresaModel> guardarEmpresa(@RequestBody EmpresaModel empresa) {
-    EmpresaModel nuevaEmpresa = empresaService.guardarEmpresa(empresa);
-    return ResponseEntity.status(HttpStatus.CREATED).body(nuevaEmpresa);
+  public ResponseEntity<?> guardarEmpresa(@RequestBody EmpresaModel empresa) {
+    try {
+      EmpresaModel nuevaEmpresa = empresaService.guardarEmpresa(empresa);
+      return ResponseEntity.status(HttpStatus.CREATED).body(nuevaEmpresa);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al guardar la empresa: " + e.getMessage());
+    }
   }
 
   @GetMapping("/{id}")

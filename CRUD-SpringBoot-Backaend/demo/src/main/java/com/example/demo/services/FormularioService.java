@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
 import java.util.ArrayList;
-//import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,27 +11,25 @@ import com.example.demo.repositories.FormularioRepository;
 
 @Service
 public class FormularioService {
+
   @Autowired
   FormularioRepository formularioRepository;
 
-  public ArrayList<FormularioModel> obtenerFormulario() {
-    return (ArrayList<FormularioModel>) formularioRepository.findAll();
-  }
-  
-  public FormularioModel guardarFormulario(FormularioModel formulario) {
-    return formularioRepository.save(formulario);
-  }
-/*
-  public Optional<FormularioModel> obtenerPorId(Long id) {
-    return formularioRepository.findById(id);
+  public List<FormularioModel> obtenerFormulario() {
+    try {
+      return (List<FormularioModel>) formularioRepository.findAll();
+    } catch (Exception e) {
+      System.err.println("Error al obtener formularios: " + e.getMessage());
+      return new ArrayList<>();
+    }
   }
 
-  public boolean eliminarFormulario(Long id) {
+  public FormularioModel guardarFormulario(FormularioModel formulario) {
     try {
-      formularioRepository.deleteById(id);
-      return true;
-    } catch (Exception err) {
-      return false;
+      return formularioRepository.save(formulario);
+    } catch (Exception e) {
+      System.err.println("Error al guardar formulario: " + e.getMessage());
+      return null;     
     }
-  }*/
+  }
 }

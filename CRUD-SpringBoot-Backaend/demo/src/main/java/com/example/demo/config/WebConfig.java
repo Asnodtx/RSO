@@ -11,6 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                     "http://localhost:5173",     // Para desarrollo local
+                    "http://localhost:5174",     // Para desarrollo local
                     "http://frontend:80",        // Para comunicación entre contenedores
                     "http://localhost:80",       // Para acceder desde el host
                     "http://127.0.0.1:5173",    // Alternativa para desarrollo local

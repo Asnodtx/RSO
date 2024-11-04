@@ -29,9 +29,15 @@ public class EstudianteController {
   }
 
   @PostMapping
-  public ResponseEntity<EstudianteModel> guardarEstudiante(@RequestBody EstudianteModel estudiante) {
-    EstudianteModel nuevoEstudiante = estudianteService.guardarEstudiante(estudiante);
-    return ResponseEntity.status(HttpStatus.CREATED).body(nuevoEstudiante);
+  public ResponseEntity<?> guardarEstudiante(@RequestBody EstudianteModel estudiante) {
+    try {
+      EstudianteModel nuevoEstudiante = estudianteService.guardarEstudiante(estudiante);
+      return ResponseEntity.status(HttpStatus.CREATED).body(nuevoEstudiante);
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al registrar un estudiante");
+    }
   }
 
   @GetMapping("/{id}")

@@ -29,9 +29,13 @@ public class TrabajadorController {
   }
 
   @PostMapping
-  public ResponseEntity<TrabajadorModel> guardarTrabajador(@RequestBody TrabajadorModel trabajador) {
-    TrabajadorModel nuevoTrabajador = trabajadorService.guardarTrabajador(trabajador);
-    return ResponseEntity.status(HttpStatus.CREATED).body(nuevoTrabajador);
+  public ResponseEntity<?> guardarTrabajador(@RequestBody TrabajadorModel trabajador) {
+    try {
+      TrabajadorModel nuevoTrabajador = trabajadorService.guardarTrabajador(trabajador);
+      return ResponseEntity.status(HttpStatus.CREATED).body(nuevoTrabajador);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al registrar un trabajador");
+    }
   }
 
   @GetMapping("/{id}")

@@ -1,14 +1,10 @@
 package com.example.demo.controller;
 
 import java.util.List;
-//import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,30 +20,20 @@ public class FormularioController {
   FormularioService formularioService;
 
   @GetMapping
-  public List<FormularioModel> obtenerFormularios() {
-    return formularioService.obtenerFormulario();
+  public ResponseEntity<?> obtenerFormularios() {
+    List<FormularioModel> formularios = formularioService.obtenerFormulario();
+    if (formularios.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron formularios.");
+    }
+    return ResponseEntity.ok(formularios);
   }
 
   @PostMapping
-  public ResponseEntity<FormularioModel> guardarFormulario(@RequestBody FormularioModel formulario) {
-    FormularioModel nuevaFormulario = formularioService.guardarFormulario(formulario);
-    return ResponseEntity.status(HttpStatus.CREATED).body(nuevaFormulario);
-  }
-/*
-  @GetMapping("/{id}")
-  public ResponseEntity<FormularioModel> obtenerFormularioPorId(@PathVariable Long id) {
-    Optional<FormularioModel> formulario = formularioService.obtenerPorId(id);
-    return formulario.map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.notFound().build());
-  }
-
-  @DeleteMapping("/{id}")
-  public ResponseEntity<String> eliminarFormularioPorId(@PathVariable Long id) {
-    boolean ok = formularioService.eliminarFormulario(id);
-    if (ok) {
-      return ResponseEntity.ok("Se eliminó la formulario con id: " + id);
-    } else {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo eliminar la formulario con id: " + id);
+  public ResponseEntity<?> guardarFormulario(@RequestBody FormularioModel formulario) {
+    FormularioModel nuevoFormulario = formularioService.guardarFormulario(formulario);
+    if (nuevoFormulario == null) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar el formulario.");
     }
-  }*/
+    return ResponseEntity.status(HttpStatus.CREATED).body(nuevoFormulario);
+  }
 }

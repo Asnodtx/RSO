@@ -1,10 +1,10 @@
 services:
   frontend:
     build:
-      context: ./crud-from/
+      context: ./salud-laboral/salud-laboral/
       dockerfile: Dockerfile
     ports:
-      - "5173:80"
+      - "5174:80"
     depends_on:
       - backend
     networks:
@@ -26,7 +26,7 @@ services:
       - SPRING_JPA_HIBERNATE_DDL-AUTO=update
       - TZ=America/Mexico_City
       - JAVA_OPTS=-Duser.timezone=America/Mexico_City
-      - ALLOWED_ORIGINS=http://localhost:5173,http://frontend:80,http://localhost:80,http://127.0.0.1:5173
+      - ALLOWED_ORIGINS=http://frontend1:80,http://frontend2:80,http://localhost:5173
     depends_on:
       oracle-db:
         condition: service_healthy
