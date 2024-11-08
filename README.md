@@ -16,12 +16,15 @@ Abre un terminal (CMD, PowerShell, o Git Bash) y ejecuta el siguiente comando pa
 git clone https://github.com/Asnodtx/RSO.git
 ```
 
-### Paso 2: Navegar al Directorio del Proyecto
+### Paso 2: Navegar al Directorio del Proyecto y hacer otro git clone para el Frontend
 
 ```bash
 cd RSO
-```
 
+cd salud-laboral
+
+git clone https://github.com/eliascardona/salud-laboral.git
+```
 ### Paso 3: Configurar las Variables de Entorno
 
 El archivo `docker-compose.yml` ya contiene las configuraciones de entorno necesarias. Si es necesario, puedes modificar las variables de entorno directamente en este archivo o crear un archivo `.env` en la raíz del proyecto para manejar las credenciales de manera segura.
